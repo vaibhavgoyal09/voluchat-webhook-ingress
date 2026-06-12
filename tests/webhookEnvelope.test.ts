@@ -43,7 +43,7 @@ test("buildWebhookEnvelope records best-effort metadata without requiring JSON",
   assert.deepEqual(result.jobData.meta, { matchedSecret: "instagram" });
   assert.match(
     result.jobId,
-    /^meta:webhook:instagram:unknown:2026-06-12t12-00-00-000z:[a-f0-9]{16}$/,
+    /^meta-webhook-instagram-unknown-2026-06-12t12-00-00-000z-[a-f0-9]{16}$/,
   );
 });
 
@@ -60,6 +60,20 @@ test("buildWebhookEnvelope sanitizes descriptive job id fields", () => {
 
   assert.match(
     result.jobId,
-    /^meta:webhook:bad-channel:whatsapp-business-account:2026-06-12t12-00-00-000z:[a-f0-9]{16}$/,
+    /^meta-webhook-bad-channel-whatsapp-business-account-2026-06-12t12-00-00-000z-[a-f0-9]{16}$/,
   );
+});
+
+test("buildWebhookEnvelope generates a BullMQ-safe job id without colons", () => {
+  const result = buildWebhookEnvelope({
+    rawBody: Buffer.from('{"object":"page"}'),
+    channelParam: "messenger",
+    matchedSecret: "default",
+    method: "POST",
+    path: "/messenger/webhook",
+    headers: {},
+    receivedAt: "2026-06-12T12:00:00.000Z",
+  });
+
+  assert.equal(result.jobId.includes(":"), false);
 });

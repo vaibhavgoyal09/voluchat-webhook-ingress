@@ -85,7 +85,7 @@ export function buildWebhookEnvelope(
       sanitizeJobIdPart(object ?? "unknown"),
       sanitizeJobIdPart(receivedAt),
       bodySha256.slice(0, 16),
-    ].join(":"),
+    ].join("-"),
   };
 }
 
