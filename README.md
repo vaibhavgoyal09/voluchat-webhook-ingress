@@ -35,3 +35,28 @@ npm run build
 npm run dev
 npm start
 ```
+
+## PM2
+
+Create `.env` from `.env.example`, fill in the real values, then run the compiled server with PM2:
+
+```bash
+npm install
+npm run build
+pm2 start dist/server.js --name voluchat-webhook-ingress
+pm2 save
+```
+
+The server loads `.env` on startup through `dotenv`, so an ecosystem file is not required. After changing `.env`, restart the process:
+
+```bash
+pm2 restart voluchat-webhook-ingress
+```
+
+Useful commands:
+
+```bash
+pm2 logs voluchat-webhook-ingress
+pm2 status
+pm2 stop voluchat-webhook-ingress
+```

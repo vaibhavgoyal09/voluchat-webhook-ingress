@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import { createApp } from "./app";
 import { loadConfig } from "./config";
 import { createQueueResources } from "./queue";
