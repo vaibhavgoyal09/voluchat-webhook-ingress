@@ -9,9 +9,15 @@ Copy `.env.example` and provide real values:
 - `META_VERIFY_TOKEN`: verify token configured in Meta webhook setup.
 - `META_APP_SECRET`: app secret for Facebook, Messenger, and WhatsApp.
 - `META_INSTAGRAM_APP_SECRET`: Instagram app secret.
-- `REDIS_URL`: Redis connection URL.
+- `REDIS_HOST`: Redis host. Defaults to `127.0.0.1`.
+- `REDIS_PORT`: Redis port. Defaults to `6379`.
+- `REDIS_USERNAME`: Redis username, if required.
+- `REDIS_PASSWORD`: Redis password, if required.
+- `REDIS_SSL`: set to `true` for TLS Redis connections.
 - `WEBHOOK_QUEUE_NAME`: single BullMQ queue for all Meta webhook deliveries. Defaults to `meta-webhooks`.
 - `PORT`: HTTP port. Defaults to `3000`.
+
+Lowercase aliases are also accepted for Redis settings: `redis_host`, `redis_port`, `redis_username`, `redis_password`, and `redis_ssl`.
 
 ## Routes
 

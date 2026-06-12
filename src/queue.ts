@@ -1,6 +1,7 @@
 import { Queue } from "bullmq";
 
 import type { WebhookQueuePublisher } from "./app";
+import type { RedisConnectionConfig } from "./config";
 import type { MetaWebhookJobData } from "./webhookEnvelope";
 
 export interface QueueResources {
@@ -10,11 +11,11 @@ export interface QueueResources {
 }
 
 export function createQueueResources(
-  redisUrl: string,
+  redis: RedisConnectionConfig,
   queueName: string,
 ): QueueResources {
   const queue = new Queue<MetaWebhookJobData, void, string>(queueName, {
-    connection: redisUrlToConnectionOptions(redisUrl),
+    connection: redis,
   });
 
   return {
@@ -41,20 +42,5 @@ export function createQueueResources(
     async close() {
       await queue.close();
     },
-  };
-}
-
-function redisUrlToConnectionOptions(redisUrl: string) {
-  const url = new URL(redisUrl);
-  const db = url.pathname.length > 1 ? Number(url.pathname.slice(1)) : undefined;
-
-  return {
-    host: url.hostname,
-    port: url.port ? Number(url.port) : 6379,
-    username: decodeURIComponent(url.username) || undefined,
-    password: decodeURIComponent(url.password) || undefined,
-    db: Number.isInteger(db) ? db : undefined,
-    tls: url.protocol === "rediss:" ? {} : undefined,
-    maxRetriesPerRequest: null,
   };
 }

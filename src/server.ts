@@ -4,7 +4,7 @@ import { createQueueResources } from "./queue";
 
 const config = loadConfig();
 const queueResources = createQueueResources(
-  config.redisUrl,
+  config.redis,
   config.webhookQueueName,
 );
 const app = createApp({
